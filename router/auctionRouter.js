@@ -50,8 +50,6 @@ router.post('/register', async function(req, res)
 
     //player registers for auction
 
-    // name | email | category | base_price | created_at | auction_id | is_approved
-
     try
     {
         const name = req.body.name
@@ -82,5 +80,109 @@ router.post('/register', async function(req, res)
 
 })
 
+router.get('/registered-players', async function (req, res)
+{
+    try
+    {
+        //view all the players that have registered for the auction
+        const auction_id = req.body.auction_id
 
+        if (!auction_id)
+        return res.status(400).send('Enter auction id')
+
+        const players = (await pool.query('select * from player where auction_id = $1', [auction_id])).rows
+
+        if (players.length === 0)
+        return res.status(404).send('No players have registered for the auction.')
+
+        else
+        return res.status(200).send(players)
+
+    
+    }
+
+    catch(err)
+    {
+        return res.status(400).send(err.message)
+    }
+})
+router.get('/approved-players', async function (req, res)
+{
+    try
+    {
+        const auction_id = req.body.auction_id
+        
+        if (!auction_id)
+        return res.status(400).send('Enter auction id')
+        
+        const players = (await pool.query('select * from player where auction_id = $1 and is_approved = $2', [auction_id, true])).rows
+        
+        if (players.length === 0)
+        return res.status(404).send('No registered player has been approved for the auction.')
+    
+        else
+        return res.status(200).send(players)
+        //view all the players that have been approved for the auction
+
+    }
+    catch(err)
+    {
+        return res.status(400).send(err.message)
+    }
+})
+
+router.get('/unapproved-players', async function (req, res)
+{
+    try
+    {
+        //view all the players that have registered but are unapproved for the auction
+        const auction_id = req.body.auction_id
+        
+        if (!auction_id)
+        return res.status(400).send('Enter auction id')
+        
+        const players = (await pool.query('select * from player where auction_id = $1 and is_approved = $2', [auction_id, false])).rows
+        
+        if (players.length === 0)
+        return res.status(404).send('No unapproved players')
+    
+        else
+        return res.status(200).send(players)
+
+    }
+    catch(err)
+    {
+        return res.status(400).send(err.message)
+    }
+})
+
+router.get('/sold-players', async function (req, res)
+{
+    try
+    {
+        //view all the players that have been sold for the auction
+        const auction_id = req.body.auction_id
+        
+        if (!auction_id)
+        return res.status(400).send('Enter auction id')
+        
+        const query = 'select player.name, player.category, player.base_price, SoldPlayers.sold_amount, franchise.name as Purchased_by\
+        from SoldPlayers \
+        inner join player on SoldPlayers.player_id = player.id \
+        inner join franchise on SoldPlayers.franchise_id = franchise.id'
+        
+        const players = (await pool.query(query)).rows
+        
+        if (players.length === 0)
+        return res.status(404).send('No players have registered for the auction.')
+    
+        else
+        return res.status(200).send(players)
+
+    }
+    catch(err)
+    {
+        return res.status(400).send(err.message)
+    }
+})
 export default router

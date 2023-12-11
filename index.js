@@ -3,7 +3,8 @@ import session from 'express-session'
 import admin_router from './router/adminRouter.js'
 import auction_router from './router/auctionRouter.js'
 import franchise_router from './router/franchiseRouter.js'
-import old_router from './routers.js'
+import user_router from './router/userRouter.js'
+
 import { PORT_NO } from './constants.js'
 
 var app = express()
@@ -24,7 +25,7 @@ app.use(session(
 app.use('/admin', admin_router)  
 app.use('/auction', auction_router)  
 app.use('/franchise', franchise_router)
-app.use('/old_router', old_router)
+app.use('/user', user_router)
 
 
 app.use((err, req, res, next) => {

@@ -74,7 +74,7 @@ router.post('/login', async function (req, res)
         const email = req.body.email
         const password = req.body.password
 
-        const franchise = (await pool.query('select * from franchise where email = $1', [email])).rows[0]
+        let franchise = (await pool.query('select * from franchise where email = $1', [email])).rows[0]
 
         if (!franchise)
         return res.status(400).send('incorrect email')
@@ -88,6 +88,7 @@ router.post('/login', async function (req, res)
             if (!result)
             return res.status(401).send('incorrect password')
 
+            delete franchise.password
             req.session.franchise = franchise
             return res.status(200).send(franchise)
 
@@ -131,11 +132,11 @@ router.post('/logout', function (req, res)
 
 router.post('/approve/:player_id', async function(req, res)
 {
-    //franchise after logging in, approves the player for the auction
+    //franchise or auction admin after logging in, approves the player for the auction
     try
     {
-        if (!req.session.franchise)
-        return res.status(401).send('Unauthorized! Login as franchise to continue')
+        if (!req.session.franchise && !req.session.admin)
+        return res.status(401).send('Unauthorized! Login as franchise or auction admin to continue')
 
         const player = (await pool.query('select * from player where id = $1 and auction_id = $2 and is_approved = $3', [req.params.player_id, req.session.franchise.auction_id, false])).rows[0]
 
@@ -219,6 +220,36 @@ router.get('/view-purse', async function (req, res)
         const remaining_purse = total_purse - total_expenditure
 
         return res.status(200).json({total_purse: total_purse, total_expenditure: total_expenditure, remaining_purse: remaining_purse})
+    }
+
+    catch(err)
+    {
+        return res.status(400).send(err.message)
+    }
+})
+
+router.get('/players', async function (req, res)
+{
+    try
+    {
+        const franchise_id = req.body.franchise_id
+        if (!franchise_id)
+        return res.status(400).send('Enter franchise id')
+
+        const query = 'select player.name, player.category, player.base_price, soldplayers.sold_amount \
+        from soldplayers \
+        inner join player \
+        on soldplayers.player_id = player.id \
+        where franchise_id = $1\
+        '
+        const players = (await pool.query(query, [franchise_id])).rows
+
+        if (players.length === 0)
+        return res.status(404).send('No player found')
+
+        else
+        return res.status(200).send(players)
+
     }
 
     catch(err)

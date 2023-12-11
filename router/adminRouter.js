@@ -61,8 +61,7 @@ router.post('/login', async function(req, res)
         const email = req.body.email
         const password = req.body.password
 
-        let admin = (await pool.query('select * from AuctionAdmin where email = $1', [email])).rows
-        admin = admin[0]
+        let admin = (await pool.query('select * from AuctionAdmin where email = $1', [email])).rows[0]
         
         if (!admin)
         return res.status(400).send('invalid email.')
@@ -77,8 +76,8 @@ router.post('/login', async function(req, res)
 
             if (result)
             {
-                req.session.admin = admin
                 delete admin.password
+                req.session.admin = admin
                 return res.status(200).send(req.session.admin)
             }
 
