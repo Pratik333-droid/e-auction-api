@@ -1,5 +1,5 @@
 import express from 'express'
-import session from 'cookie-session'
+import session from 'express-session'
 import admin_router from './router/adminRouter.js'
 import auction_router from './router/auctionRouter.js'
 import franchise_router from './router/franchiseRouter.js'
