@@ -14,7 +14,7 @@ router.post('/create', async function(req, res)
     try
     {
 
-        if (!req.session.admin)
+        if (!req.session?.admin)
         return res.status(401).send('Please login as the auction admin to continue.')
 
         const name = req.body.name
@@ -68,7 +68,7 @@ router.post('/login', async function (req, res)
     //franchise logs in
     try
     {
-        if (req.session.franchise || req.session.admin)
+        if (req.session?.franchise || req.session?.admin)
         return res.status(400).send('You are already logged in')
 
         const email = req.body.email
@@ -108,18 +108,11 @@ router.post('/logout', function (req, res)
     //franchise logs out
     try
     {
-        if (!req.session.franchise)
+        if (!req.session?.franchise)
         return res.status(400).send('You are not logged in as franchise.')
 
-        // req.session.franchise = undefined
-        req.session.destroy(function (err)
-        {
-            if (err)
-            return res.status(500).send('Cant log you out')
-            
-            else
-            return res.status(200).send('Successfully logged out')
-        })
+        req.session = null
+        return res.status(200).send('Successfully logged out')
         
     }
 
@@ -135,7 +128,7 @@ router.post('/approve/:player_id', async function(req, res)
     //franchise or auction admin after logging in, approves the player for the auction
     try
     {
-        if (!req.session.franchise && !req.session.admin)
+        if (!req.session?.franchise && !req.session?.admin)
         return res.status(401).send('Unauthorized! Login as franchise or auction admin to continue')
 
         const player = (await pool.query('select * from player where id = $1 and auction_id = $2 and is_approved = $3', [req.params.player_id, req.session.franchise.auction_id, false])).rows[0]
@@ -159,7 +152,7 @@ router.post('/purchase-player/:player_id', async function (req, res)
     //when the franchise purchases player in the auction
     try
     {
-        if (!req.session.franchise)
+        if (!req.session?.franchise)
         return res.status(400).send('Unauthorized! Login as franchise to continue')
 
         const player = (await pool.query('select * from player where id = $1 and auction_id = $2 and is_approved = $3', [req.params.player_id, req.session.franchise.auction_id, true])).rows[0]
@@ -197,7 +190,7 @@ router.get('/view-purse', async function (req, res)
     try
     {
         //when franchise views its balance
-        if (!req.session.franchise)
+        if (!req.session?.franchise)
         return res.status(401).send('Unauthorized! Login as franchise to continue')
 
         const franchise_id = req.session.franchise.id

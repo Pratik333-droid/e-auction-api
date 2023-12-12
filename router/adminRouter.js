@@ -53,7 +53,7 @@ router.post('/create', async function(req, res)
 router.post('/login', async function(req, res)
 {
     //login
-    if (req.session.admin || req.session.franchise)
+    if (req.session?.admin || req.session?.franchise)
     return res.status(400).send('Please logout to login again from another account.')
 
     try
@@ -99,21 +99,11 @@ router.post('/logout', async function(req, res)
     //logout
     try
     {
-        if (!req.session.admin)
+        if (!req.session?.admin)
         return res.status(400).send('You are already logged out')
 
-
-        req.session.destroy(function (err)
-        {
-            if (err)
-            return res.status(500).send('Cant log you out')
-            
-            else
-            {
-                return res.status(200).send('Successfully logged out')
-
-            }
-        })
+        req.session = null
+        return res.status(200).send('successfully logged out')
     }
     catch(err)
     {

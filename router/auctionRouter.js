@@ -11,7 +11,7 @@ router.post('/create', async function(req, res)
     //admin creates auction
     try
     {
-        if (!req.session.admin)
+        if (!req.session?.admin)
         return res.status(401).send('Unauthorized! Login as auction admin to continue.')
 
         const name = req.body.name
