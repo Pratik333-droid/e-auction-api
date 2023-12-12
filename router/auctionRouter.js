@@ -24,6 +24,10 @@ router.post('/create', async function(req, res)
         if (!name || !total_teams || !budget_per_team || !date_of_auction || !admin_id)
         return res.status(400).send('Enter all the necessary details')
 
+        //see if the auction date is the date in the past
+        if (date_of_auction < new Date())
+        return res.status(400).send('Set the future date for the auction')
+
         //see if the admin exists
         const admin = (await pool.query('select * from AuctionAdmin where id = $1', [admin_id])).rows[0]
 
@@ -169,9 +173,10 @@ router.get('/sold-players', async function (req, res)
         const query = 'select player.name, player.category, player.base_price, SoldPlayers.sold_amount, franchise.name as Purchased_by\
         from SoldPlayers \
         inner join player on SoldPlayers.player_id = player.id \
-        inner join franchise on SoldPlayers.franchise_id = franchise.id'
+        inner join franchise on SoldPlayers.franchise_id = franchise.id\
+        where auction_id = $1'
         
-        const players = (await pool.query(query)).rows
+        const players = (await pool.query(query, [auction_id])).rows
         
         if (players.length === 0)
         return res.status(404).send('No players have registered for the auction.')
