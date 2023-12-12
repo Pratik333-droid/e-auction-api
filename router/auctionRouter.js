@@ -26,7 +26,7 @@ router.post('/create', async function(req, res)
 
         //see if the auction date is the date in the past
         if (date_of_auction < new Date())
-        return res.status(400).send('Set the future date for the auction')
+        return res.status(400).send('Date of auction cannot be a past date')
 
         //see if the admin exists
         const admin = (await pool.query('select * from AuctionAdmin where id = $1', [admin_id])).rows[0]
@@ -174,7 +174,7 @@ router.get('/sold-players', async function (req, res)
         from SoldPlayers \
         inner join player on SoldPlayers.player_id = player.id \
         inner join franchise on SoldPlayers.franchise_id = franchise.id\
-        where auction_id = $1'
+        where SoldPlayers.auction_id = $1'
         
         const players = (await pool.query(query, [auction_id])).rows
         
