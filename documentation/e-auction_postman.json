@@ -1,0 +1,356 @@
+{
+    "info": {
+        "_postman_id": "c4af852b-7d9f-471e-a470-fecf85aed032",
+        "name": "e-auction",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "description": ""
+    },
+    "item": [
+        {
+            "name": "create admin",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "https://e-auction-api.onrender.com/admin/create",
+                    "path": [
+                        "admin",
+                        "create"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "e-auction-api",
+                        "onrender",
+                        "com"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"name\": \"sharma\",\n  \"email\": \"sharma@gmail.com\",\n  \"password\": \"sharma123\"\n}"
+                }
+            }
+        },
+        {
+            "name": "aucadmin login",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "https://e-auction-api.onrender.com/admin/login",
+                    "path": [
+                        "admin",
+                        "login"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "e-auction-api",
+                        "onrender",
+                        "com"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\"email\": \"sharma@gmail.com\", \"password\": \"sharma123\"}"
+                }
+            }
+        },
+        {
+            "name": "create franchise",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "https://e-auction-api.onrender.com/franchise/create",
+                    "path": [
+                        "franchise",
+                        "create"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "e-auction-api",
+                        "onrender",
+                        "com"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"name\": \"Pokhara Rhinos\",\n  \"email\": \"rhinos@gmail.com\",\n  \"password\": \"rhinos123\",\n  \"auction_id\": 5\n}"
+                }
+            }
+        },
+        {
+            "name": "player register for auction",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "https://e-auction-api.onrender.com/auction/register",
+                    "path": [
+                        "auction",
+                        "register"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "e-auction-api",
+                        "onrender",
+                        "com"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"name\": \"Dipendra Singh Airee\",\n  \"email\": \"dipendra@gmail.com\",\n  \"category\": \"batsman\",\n  \"base_price\": 2000, \n  \"auction_id\": 5\n}"
+                }
+            }
+        },
+        {
+            "name": "aucadmin create auction",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "https://e-auction-api.onrender.com/auction/create",
+                    "path": [
+                        "auction",
+                        "create"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "e-auction-api",
+                        "onrender",
+                        "com"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"name\": \"IPL 2025\",\n  \"total_teams\": 10,\n  \"budget_per_team\": 8000000,\n  \"date_of_auction\": \"2023-12-10T03:39:51.538Z\"\n}"
+                }
+            }
+        },
+        {
+            "name": "aucadmin logout",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "https://e-auction-api.onrender.com/admin/logout",
+                    "path": [
+                        "admin",
+                        "logout"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "e-auction-api",
+                        "onrender",
+                        "com"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "franchise login",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "https://e-auction-api.onrender.com/franchise/login",
+                    "path": [
+                        "franchise",
+                        "login"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "e-auction-api",
+                        "onrender",
+                        "com"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"email\": \"rhinos@gmail.com\",\n  \"password\": \"rhinos123\"\n}"
+                }
+            }
+        },
+        {
+            "name": "franchise logout",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "https://e-auction-api.onrender.com/franchise/logout",
+                    "path": [
+                        "franchise",
+                        "logout"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "e-auction-api",
+                        "onrender",
+                        "com"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "franchise approves player",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "https://e-auction-api.onrender.com/franchise/approve/10",
+                    "path": [
+                        "franchise",
+                        "approve",
+                        "10"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "e-auction-api",
+                        "onrender",
+                        "com"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "franchise purchases player",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "https://e-auction-api.onrender.com/franchise/purchase-player/10",
+                    "path": [
+                        "franchise",
+                        "purchase-player",
+                        "10"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "e-auction-api",
+                        "onrender",
+                        "com"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\"expenditure\": 2800}"
+                }
+            }
+        },
+        {
+            "name": "franchise views purse",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "https://e-auction-api.onrender.com/franchise/view-purse",
+                    "path": [
+                        "franchise",
+                        "view-purse"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "e-auction-api",
+                        "onrender",
+                        "com"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "view sold players",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "https://e-auction-api.onrender.com/auction/sold-players",
+                    "path": [
+                        "auction",
+                        "sold-players"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "e-auction-api",
+                        "onrender",
+                        "com"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\"auction_id\": 5}"
+                }
+            }
+        },
+        {
+            "name": "view profile",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "https://e-auction-api.onrender.com/user/",
+                    "path": [
+                        "user"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "e-auction-api",
+                        "onrender",
+                        "com"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "franchise views purchased players",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "localhost:3000/franchise/players",
+                    "path": [
+                        "franchise",
+                        "players"
+                    ],
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\"franchise_id\": \"7\"}"
+                }
+            }
+        }
+    ]
+}

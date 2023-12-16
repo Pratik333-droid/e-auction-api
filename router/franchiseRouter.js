@@ -128,13 +128,18 @@ router.post('/approve/:player_id', async function(req, res)
     //franchise or auction admin after logging in, approves the player for the auction
     try
     {
-        if (!req.session?.franchise && !req.session?.admin)
-        return res.status(401).send('Unauthorized! Login as franchise or auction admin to continue')
+        if (!req.session?.franchise)
+        return res.status(401).send('Unauthorized! Login as franchise to continue')
+
+        const player_id = req.params.player_id
+
+        if (typeof player_id !== 'number')
+        return res.status(400).send('Invalid player id')
 
         const player = (await pool.query('select * from player where id = $1 and auction_id = $2 and is_approved = $3', [req.params.player_id, req.session.franchise.auction_id, false])).rows[0]
 
         if (!player)
-        return res.status(400).send(`Player does not exist.`)
+        return res.status(400).send(`Player does not exist or is already approved.`)
 
         await pool.query('update player set is_approved = $1 where id = $2 and auction_id = $3', [true, req.params.player_id, req.session.franchise.auction_id])
 
@@ -189,10 +194,6 @@ router.get('/view-purse', async function (req, res)
 {
     try
     {
-        //when franchise views its balance
-        if (!req.session?.franchise)
-        return res.status(401).send('Unauthorized! Login as franchise to continue')
-
         const franchise_id = req.session.franchise.id
         const auction_id = req.session.franchise.auction_id
 
@@ -228,6 +229,9 @@ router.get('/players', async function (req, res)
         const franchise_id = req.body.franchise_id
         if (!franchise_id)
         return res.status(400).send('Enter franchise id')
+
+        if (typeof franchise_id !== 'number')
+        return res.status(400).send('Invalid id! Id must be of type integer')
 
         const query = 'select player.name, player.category, player.base_price, soldplayers.sold_amount \
         from soldplayers \
