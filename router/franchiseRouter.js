@@ -133,8 +133,8 @@ router.post('/approve/:player_id', async function(req, res)
 
         const player_id = req.params.player_id
 
-        if (typeof player_id !== 'number')
-        return res.status(400).send('Invalid player id')
+        // if (typeof player_id !== 'number')
+        // return res.status(400).send('Invalid player id')
 
         const player = (await pool.query('select * from player where id = $1 and auction_id = $2 and is_approved = $3', [req.params.player_id, req.session.franchise.auction_id, false])).rows[0]
 
